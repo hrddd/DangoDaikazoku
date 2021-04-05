@@ -1,9 +1,14 @@
 ## Links
+
 ### Next.js
 [Next.js](https://nextjs.org/)
 [types support](https://nextjs.org/learn/excel/typescript/nextjs-types)
 
+### ESLint/Prettier
+[Next.js 10 に TypeScript と ESLint, Prettier と Jest を導入する](https://qiita.com/282Haniwa/items/dcce1ba6bb6ae541893e#husky%E3%81%AE%E5%B0%8E%E5%85%A5)
+
 ## Default
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
