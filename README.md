@@ -1,10 +1,11 @@
 ## Links
 ### Next.js
 [Next.js](https://nextjs.org/)
-
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+[types support](https://nextjs.org/learn/excel/typescript/nextjs-types)
 
 ## Default
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
 ## Getting Started
 
 First, run the development server:
