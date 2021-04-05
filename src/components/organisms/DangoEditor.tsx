@@ -8,6 +8,14 @@ const DangoEditor = () => {
     height: 52,
     fill: '#aaC8B3',
   })
+  const onChangeHandlerFactory = (key: string) => {
+    return (e: ChangeEvent<HTMLInputElement>) => {
+      setState({
+        ...state,
+        [key]: Number(e.currentTarget.value)
+      })
+    }
+  }
 
   const widthRangeProps = {
     id: 'width',
@@ -16,12 +24,7 @@ const DangoEditor = () => {
     min: 72,
     max: 1440,
     value: state.width,
-    onChange: (e: ChangeEvent<HTMLInputElement>) => {
-      setState({
-        ...state,
-        width: Number(e.currentTarget.value)
-      })
-    }
+    onChange: onChangeHandlerFactory('width')
   }
   const heightRangeProps = {
     id: 'height',
@@ -30,12 +33,7 @@ const DangoEditor = () => {
     min: 72,
     max: 1028,
     value: state.height,
-    onChange: (e: ChangeEvent<HTMLInputElement>) => {
-      setState({
-        ...state,
-        height: Number(e.currentTarget.value)
-      })
-    }
+    onChange: onChangeHandlerFactory('height')
   }
   return (
     <>
