@@ -1,20 +1,16 @@
 // TODO: テスト
 // height操作でstateが変更される
 // width操作でstateが変更される
-// scaleLink操作でstateが変更される
-// scaleLink操作でheight,widthの更新方法が変更される
 
 import Dango from "../molecules/Dango";
 import InputRange from '../atoms/InputRange';
 import { ChangeEvent, useState } from "react";
-import InputToggle from '../atoms/InputToggle';
 import InputColor from '../atoms/InputColor';
 
 const initialState = {
   width: 72,
   height: 52,
   fill: '#aaC8B3',
-  scaleLink: true,
   stroke: '#5D3F35',
   strokeWidth: 8
 }
@@ -34,7 +30,7 @@ const DangoEditor = () => {
       setState({
         ...state,
         width,
-        height: state.scaleLink ? Math.ceil(width * initialState.height / initialState.width) : state.height
+        height: Math.ceil(width * initialState.height / initialState.width)
       })
     }
   }
@@ -49,20 +45,8 @@ const DangoEditor = () => {
       const height = Number(e.currentTarget.value);
       setState({
         ...state,
-        width: state.scaleLink ? Math.ceil(height * initialState.width / initialState.height) : state.width,
+        width: Math.ceil(height * initialState.width / initialState.height),
         height
-      })
-    }
-  }
-  const scaleLinkToggleProps = {
-    id: 'scaleLink',
-    label: 'scaleLink',
-    name: 'scaleLink',
-    checked: state.scaleLink,
-    onChange: (e: ChangeEvent<HTMLInputElement>) => {
-      setState({
-        ...state,
-        scaleLink: e.currentTarget.checked
       })
     }
   }
@@ -109,7 +93,6 @@ const DangoEditor = () => {
       <Dango {...state} />
       <InputRange {...widthRangeProps} />
       <InputRange {...heightRangeProps} />
-      <InputToggle {...scaleLinkToggleProps} />
       <InputColor {...fillProps} />
       <InputColor {...strokeProps} />
       <InputRange {...strokeWidthProps} />
