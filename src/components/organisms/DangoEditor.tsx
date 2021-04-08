@@ -70,7 +70,7 @@ const DangoEditor = () => {
     id: 'fill',
     label: 'fill',
     name: 'fill',
-    value: '#aaC8B3',
+    value: state.fill,
     onChange: (e: ChangeEvent<HTMLInputElement>) => {
       setState({
         ...state,
@@ -82,7 +82,7 @@ const DangoEditor = () => {
     id: 'stroke',
     label: 'stroke',
     name: 'stroke',
-    value: '#5D3F35',
+    value: state.stroke,
     onChange: (e: ChangeEvent<HTMLInputElement>) => {
       setState({
         ...state,
