@@ -15,6 +15,7 @@ const initialState = {
   height: 52,
   fill: '#aaC8B3',
   scaleLink: true,
+  stroke: '#5D3F35'
 }
 
 const DangoEditor = () => {
@@ -76,6 +77,18 @@ const DangoEditor = () => {
       })
     }
   }
+  const strokeProps = {
+    id: 'stroke',
+    label: 'stroke',
+    name: 'stroke',
+    value: '#5D3F35',
+    onChange: (e: ChangeEvent<HTMLInputElement>) => {
+      setState({
+        ...state,
+        stroke: e.currentTarget.value,
+      })
+    }
+  }
   return (
     <>
       <Dango {...state} />
@@ -83,6 +96,7 @@ const DangoEditor = () => {
       <InputRange {...heightRangeProps} />
       <InputToggle {...scaleLinkToggleProps} />
       <InputColor {...fillProps} />
+      <InputColor {...strokeProps} />
     </>)
 }
 
