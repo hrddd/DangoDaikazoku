@@ -8,6 +8,7 @@ import Dango from "../molecules/Dango";
 import InputRange from '../atoms/InputRange';
 import { ChangeEvent, useState } from "react";
 import InputToggle from '../atoms/InputToggle';
+import InputColor from '../atoms/InputColor';
 
 const initialState = {
   width: 72,
@@ -63,12 +64,25 @@ const DangoEditor = () => {
       })
     }
   }
+  const fillProps = {
+    id: 'fill',
+    label: 'fill',
+    name: 'fill',
+    value: '#aaC8B3',
+    onChange: (e: ChangeEvent<HTMLInputElement>) => {
+      setState({
+        ...state,
+        fill: e.currentTarget.value,
+      })
+    }
+  }
   return (
     <>
       <Dango {...state} />
       <InputRange {...widthRangeProps} />
       <InputRange {...heightRangeProps} />
       <InputToggle {...scaleLinkToggleProps} />
+      <InputColor {...fillProps} />
     </>)
 }
 
