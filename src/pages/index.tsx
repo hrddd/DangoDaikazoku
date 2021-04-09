@@ -2,6 +2,7 @@ import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import DangoEditor from '../components/organisms/DangoEditor';
 import DangoDaikazoku from '../components/organisms/DangoDaikazoku';
+import { DangoDaikazokuContextProvider } from '../contexts/dangoDaikazokuContext';
 
 export default function Home() {
   return (
@@ -15,7 +16,6 @@ export default function Home() {
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
-
         <DangoDaikazoku />
         <DangoEditor />
         <p className={styles.description}>

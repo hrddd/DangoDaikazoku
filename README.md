@@ -10,6 +10,8 @@
 ### SVG
 [svgのviewBox属性とは](https://lucklog.info/svg-viewbox-image/)
 
+### Other
+[JavaScriptでユニークな文字列をさくっと生成する](https://qiita.com/coa00/items/679b0b5c7c468698d53f)
 ## Default
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
