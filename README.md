@@ -4,12 +4,17 @@
 [Next.js](https://nextjs.org/)
 [types support](https://nextjs.org/learn/excel/typescript/nextjs-types)
 
+### Context API
+[Context API と useReducer で custom hook を作る時のテンプレート](https://blog.ojisan.io/context-reducer-custom-hook)
+
 ### ESLint/Prettier
 [Next.js 10 に TypeScript と ESLint, Prettier と Jest を導入する](https://qiita.com/282Haniwa/items/dcce1ba6bb6ae541893e#husky%E3%81%AE%E5%B0%8E%E5%85%A5)
 
+### Test
+[Webpack依存のReactコンポーネントをテストする](https://qiita.com/chimame/items/f4d3d71d8156d97a839a)
+[next.js/examples/with-typescript-eslint-jest](https://github.com/vercel/next.js/tree/master/examples/with-typescript-eslint-jest)
 ### SVG
 [svgのviewBox属性とは](https://lucklog.info/svg-viewbox-image/)
-
 ### Other
 [JavaScriptでユニークな文字列をさくっと生成する](https://qiita.com/coa00/items/679b0b5c7c468698d53f)
 ## Default
