@@ -16,8 +16,12 @@ export default function Home() {
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
-        <DangoDaikazoku />
-        <DangoEditor />
+        <DangoDaikazokuContextProvider>
+          <>
+            <DangoDaikazoku />
+            <DangoEditor />
+          </>
+        </DangoDaikazokuContextProvider>
         <p className={styles.description}>
           Get started by editing{' '}
           <code className={styles.code}>pages/index.js</code>

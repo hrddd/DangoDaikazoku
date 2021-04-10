@@ -2,42 +2,29 @@
 // height操作でstateが変更される
 // width操作でstateが変更される
 
-import Dango from "../molecules/Dango";
-import InputRange from '../atoms/InputRange';
-import { ChangeEvent, useState } from "react";
-import InputColor from '../atoms/InputColor';
-
-const initialState = [{
-  id: 'dango_1',
-  width: 72,
-  height: 52,
-  fill: '#aaC8B3',
-  stroke: '#5D3F35',
-  strokeWidth: 8
-}, {
-  id: 'dango_2',
-  width: 144,
-  height: 104,
-  fill: '#aaC8B3',
-  stroke: '#5D3F35',
-  strokeWidth: 8
-}, {
-  id: 'dango_3',
-  width: 216,
-  height: 156,
-  fill: '#aaC8B3',
-  stroke: '#5D3F35',
-  strokeWidth: 8
-}]
+import { useContext } from "react";
+import SelectableDango from "../molecules/SelectableDango";
+import { DangoDaikazokuContext, DangoDaikazokuUpdateContext } from '../../contexts/dangoDaikazokuContext';
+import { deselectDangoAction, selectDangoAction, addDangoAction } from '../../modules/dangoDaikazoku';
 
 const DangoDaikazoku = () => {
-  const [state] = useState(initialState)
+  const dangoDaikazoku = useContext(DangoDaikazokuContext)
+  const dispatch = useContext(DangoDaikazokuUpdateContext)
+
+  const clickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
+    const clickedId = e.currentTarget.dataset['id'] as string
+    if (dangoDaikazoku && dangoDaikazoku.selectedId !== clickedId) {
+      dispatch(selectDangoAction(clickedId))
+    } else {
+      dispatch(deselectDangoAction())
+    }
+  }
 
   return (
     <>
-      {state.map((dangoProps) => {
-        const { id, ...props } = dangoProps
-        return (<Dango {...props} key={id} />)
+      {dangoDaikazoku?.dangos.map((dangoProps) => {
+        const isSelected = dangoDaikazoku.selectedId === dangoProps.id;
+        return (<SelectableDango {...dangoProps} isSelected={isSelected} onClick={clickHandler} key={dangoProps.id} />)
       })}
     </>)
 }
