@@ -8,6 +8,7 @@ import { DangoDaikazokuContext, DangoDaikazokuUpdateContext } from '../../contex
 import { deselectDangoAction, selectDangoAction, addDangoAction } from '../../modules/dangoDaikazoku';
 
 const DangoDaikazoku = () => {
+  // TODO: customhookに退避
   const dangoDaikazoku = useContext(DangoDaikazokuContext)
   const dispatch = useContext(DangoDaikazokuUpdateContext)
 

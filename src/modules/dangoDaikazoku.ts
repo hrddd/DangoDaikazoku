@@ -6,6 +6,7 @@ const UPDATE_DANGO = "UPDATE_DANGO" as const
 const ADD_DANGO = "ADD_DANGO" as const
 const REMOVE_DANGO = "REMOVE_DANGO" as const
 
+// action
 export const selectDangoAction = (id: Dango['id']) => {
   return { type: SELECT_DANGO, payload: { id } }
 }
@@ -35,10 +36,10 @@ export type ActionType =
   | ReturnType<typeof addDangoAction>
   | ReturnType<typeof removeDangoAction>
 
+// reducer
 export type State =
   | { dangos: Dango[]; selectedId: null }
   | { dangos: Dango[]; selectedId: string }
-
 
 const dangoFactory = () => ({
   id: new Date().getTime().toString(16),
