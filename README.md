@@ -7,6 +7,9 @@
 ### Context API
 [Context API と useReducer で custom hook を作る時のテンプレート](https://blog.ojisan.io/context-reducer-custom-hook)
 
+### TypeScript
+[5歳娘「パパ、余分なpropsいっぱい書くんだね！」](https://qiita.com/Yametaro/items/814f40d08e9d30584e20)
+
 ### ESLint/Prettier
 [Next.js 10 に TypeScript と ESLint, Prettier と Jest を導入する](https://qiita.com/282Haniwa/items/dcce1ba6bb6ae541893e#husky%E3%81%AE%E5%B0%8E%E5%85%A5)
 

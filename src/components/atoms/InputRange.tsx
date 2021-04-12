@@ -1,19 +1,19 @@
 import { ChangeEvent } from "react";
 
-type InputRangeProps = {
-  id: string,
-  label?: string,
-  name: string,
-  min: number,
-  max: number,
-  value: number,
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void
-}
+type InputRangeProps = Pick<JSX.IntrinsicElements['input'],
+  | 'id'
+  | 'value'
+  | 'name'
+  | 'min'
+  | 'max'
+  | 'onChange'> & {
+    labelText?: string,
+  }
 
 const InputRange = (props: InputRangeProps) => (
   <>
-    {props.label ? (
-      <label htmlFor={props.id}>{props.label}</label>
+    {props.labelText ? (
+      <label htmlFor={props.id}>{props.labelText}</label>
     ) : ''}
     <input type="range" id={props.id} name={props.name} min={props.min} max={props.max} value={props.value} onChange={props.onChange} />
     {props.value}
