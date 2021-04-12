@@ -38,6 +38,19 @@ describe('Actions', () => {
       dummyDango('id3')
     ])
   })
+  it('updateDangoAction: 一個の時でもだんごのパラメータをアップデートできる', () => {
+    const action = updateDangoAction({
+      ...dummyDango('id2'), width: 144
+    });
+    const result = reducer({
+      dangos: [
+        dummyDango('id2')
+      ], selectedId: null
+    }, action);
+    expect(result.dangos).toEqual([
+      { ...dummyDango('id2'), width: 144 },
+    ])
+  })
   it('addDangoAction: だんごを追加できる', () => {
     const action = addDangoAction();
     const result = reducer({

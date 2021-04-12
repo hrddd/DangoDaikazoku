@@ -65,7 +65,7 @@ export const reducer = (state: State, action: ActionType): State => {
       }
     case UPDATE_DANGO:
       const targetIndex = state.dangos.findIndex(dango => dango.id === action.payload.id)
-      return targetIndex > 0 ? {
+      return targetIndex >= 0 ? {
         ...state,
         dangos: [
           ...state.dangos.slice(0, targetIndex),

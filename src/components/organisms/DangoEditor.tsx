@@ -8,6 +8,8 @@ import { ChangeEvent, useContext, useEffect, useState } from "react";
 import InputColor from '../atoms/InputColor';
 import { DangoDaikazokuContext, DangoDaikazokuUpdateContext } from "../../contexts/dangoDaikazokuContext";
 import DangoDaikazoku from './DangoDaikazoku';
+import Button from "../atoms/Button";
+import { updateDangoAction } from "../../modules/dangoDaikazoku";
 
 const initialState = {
   width: 72,
@@ -105,6 +107,16 @@ const DangoEditor = () => {
     }
   }
 
+  const applyProps = {
+    labelText: '変更を反映する',
+    onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
+      if (!state) return void (0);
+      dispatch(updateDangoAction({
+        ...state,
+      }))
+    }
+  }
+
   return (
     <>
       {
@@ -116,6 +128,7 @@ const DangoEditor = () => {
             <InputColor {...fillProps} />
             <InputColor {...strokeProps} />
             <InputRange {...strokeWidthProps} />
+            <Button {...applyProps} />
           </>
         ) : 'だんごを選択してください'
       }
