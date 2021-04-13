@@ -60,6 +60,28 @@ describe('Actions', () => {
     }, action);
     expect(result.dangos.length).toBe(2)
   })
+  it('addDangoAction: だんごのパラメータをコピーした上で追加できる', () => {
+    const action = addDangoAction({
+      width: 999,
+      height: 999,
+      fill: '#ffffff',
+      stroke: '#ffffff',
+      strokeWidth: 999
+    });
+    const result = reducer({
+      dangos: [
+        dummyDango('id')
+      ], selectedId: null
+    }, action);
+    const { id, ...copiedDangoParams } = result.dangos[1];
+    expect(copiedDangoParams).toEqual({
+      width: 999,
+      height: 999,
+      fill: '#ffffff',
+      stroke: '#ffffff',
+      strokeWidth: 999
+    })
+  })
   it('removeDangoAction: だんごを削除できる', () => {
     const action = removeDangoAction('id2');
     const result = reducer({

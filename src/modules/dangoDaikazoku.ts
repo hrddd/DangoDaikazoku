@@ -21,8 +21,8 @@ export const updateDangoAction = (dango: Dango) => {
   }
 }
 
-export const addDangoAction = () => {
-  return { type: ADD_DANGO }
+export const addDangoAction = (dango?: Partial<Omit<Dango, 'id'>>) => {
+  return { type: ADD_DANGO, payload: dango }
 }
 
 export const removeDangoAction = (id: Dango['id']) => {
@@ -78,7 +78,10 @@ export const reducer = (state: State, action: ActionType): State => {
         ...state,
         dangos: [
           ...state.dangos,
-          dangoFactory()
+          {
+            ...dangoFactory(),
+            ...action.payload
+          }
         ]
       }
     case REMOVE_DANGO:
