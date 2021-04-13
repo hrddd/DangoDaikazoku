@@ -22,12 +22,12 @@ const DangoDaikazoku = () => {
   }
 
   return (
-    <>
+    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-end' }}>
       {dangoDaikazoku?.dangos.map((dangoProps) => {
         const isSelected = dangoDaikazoku.selectedId === dangoProps.id;
         return (<SelectableDango {...dangoProps} isSelected={isSelected} onClick={clickHandler} key={dangoProps.id} />)
       })}
-    </>)
+    </div>)
 }
 
 export default DangoDaikazoku;
