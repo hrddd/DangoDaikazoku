@@ -1,5 +1,6 @@
-import { Dango as DangoType } from '../../types/Dango';
-import PopDango from './PopDango/PopDango';
+import { Dango as DangoType } from '../../../types/Dango';
+import PopDango from '../PopDango/PopDango';
+import styles from './SelectableDango.module.css'
 
 type SelectableDangoProps = DangoType & {
   isSelected: boolean
@@ -8,10 +9,10 @@ type SelectableDangoProps = DangoType & {
 
 const SelectableDango = (props: SelectableDangoProps) => {
   const { isSelected, onClick, id, ...dangoProps } = props;
-  const opacity = isSelected ? 0.5 : 1;
+  const className = isSelected ? `${styles['selectableDango--isSelected']}` : styles.selectableDango;
   return (
     // TODO: waiarea
-    <div onClick={onClick} role="button" style={{ opacity: opacity }} data-id={id}>
+    <div onClick={onClick} role="button" className={className} data-id={id}>
       <PopDango {...dangoProps} />
     </div>)
 }

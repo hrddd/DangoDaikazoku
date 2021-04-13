@@ -3,7 +3,7 @@
 // width操作でstateが変更される
 
 import { useContext } from "react";
-import SelectableDango from "../molecules/SelectableDango";
+import SelectableDango from "../molecules/SelectableDango/SelectableDango";
 import { DangoDaikazokuContext, DangoDaikazokuUpdateContext } from '../../contexts/dangoDaikazokuContext';
 import { deselectDangoAction, selectDangoAction, addDangoAction } from '../../modules/dangoDaikazoku';
 
