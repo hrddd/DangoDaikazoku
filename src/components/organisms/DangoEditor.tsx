@@ -2,7 +2,7 @@
 // height操作でstateが変更される
 // width操作でstateが変更される
 
-import Dango from "../molecules/Dango";
+import Dango from "../atoms/Dango";
 import InputRange from '../atoms/InputRange';
 import { ChangeEvent, useContext, useEffect, useState } from "react";
 import InputColor from '../atoms/InputColor';

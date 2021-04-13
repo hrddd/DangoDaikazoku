@@ -1,9 +1,5 @@
-// TODO: テスト
-// height操作でstateが変更される
-// width操作でstateが変更される
-
-import Dango from "./Dango";
 import { Dango as DangoType } from '../../types/Dango';
+import PopDango from './PopDango/PopDango';
 
 type SelectableDangoProps = DangoType & {
   isSelected: boolean
@@ -16,7 +12,7 @@ const SelectableDango = (props: SelectableDangoProps) => {
   return (
     // TODO: waiarea
     <div onClick={onClick} role="button" style={{ opacity: opacity }} data-id={id}>
-      <Dango {...dangoProps} key={id} />
+      <PopDango {...dangoProps} />
     </div>)
 }
 
