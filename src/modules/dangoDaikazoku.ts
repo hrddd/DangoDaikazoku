@@ -49,7 +49,7 @@ const dangoFactory = () => ({
   stroke: '#5D3F35',
   strokeWidth: 8
 })
-export const initialState: State = { dangos: [{ ...dangoFactory(), id: 'initialDango' }], selectedId: null }
+export const initialState: State = { dangos: [], selectedId: null }
 
 export const reducer = (state: State, action: ActionType): State => {
   switch (action.type) {

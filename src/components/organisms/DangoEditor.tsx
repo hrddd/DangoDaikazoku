@@ -117,12 +117,19 @@ const DangoEditor = () => {
     }
   }
 
-  const addProps = {
-    labelText: 'だんごを追加する',
+  const copyProps = {
+    labelText: 'だんごをコピーする',
     onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
       if (!state) return void (0);
       const { id, ...copiedParams } = state;
       dispatch(addDangoAction(copiedParams))
+    }
+  }
+
+  const addProps = {
+    labelText: 'だんごを追加する',
+    onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
+      dispatch(addDangoAction())
     }
   }
 
@@ -138,9 +145,9 @@ const DangoEditor = () => {
             <InputColor {...strokeProps} />
             <InputRange {...strokeWidthProps} />
             <Button {...applyProps} />
-            <Button {...addProps} />
+            <Button {...copyProps} />
           </>
-        ) : 'だんごを選択してください'
+        ) : <Button {...addProps} />
       }
     </>
   )
