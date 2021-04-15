@@ -10,8 +10,11 @@ import { DangoDaikazokuContext, DangoDaikazokuUpdateContext } from "../../contex
 import DangoDaikazoku from './DangoDaikazoku';
 import Button from "../atoms/Button";
 import { updateDangoAction, addDangoAction } from '../../modules/dangoDaikazoku';
+import InputToggle from '../atoms/InputToggle';
+import { Dango as DangoType } from '../../types/Dango';
 
-const initialState = {
+type DangoChangeableParameters = Omit<DangoType, 'id'>
+const dafaultState: DangoChangeableParameters = {
   width: 72,
   height: 52,
   fill: '#aaC8B3',
@@ -25,26 +28,49 @@ const DangoEditor = () => {
   const dispatch = useContext(DangoDaikazokuUpdateContext)
   const selectedDango = dangoDaikazoku?.dangos.find(({ id }) => id === dangoDaikazoku.selectedId)
 
-  const [state, setState] = useState(selectedDango)
+  // TODO: editor用のcontextを形成
+  // {
+  //   dango: {},
+  //   options: {
+  //     randomize: true
+  //   }
+  // }
+  const [state, setState] = useState(selectedDango);
+  const [formState, setFormState] = useState({
+    randomize: false
+  });
 
   useEffect(() => {
     setState(selectedDango)
   }, [selectedDango])
 
+  const randomizeProps = {
+    id: 'randomize',
+    labelText: 'パラメータを適当に',
+    name: 'randomize',
+    checked: formState.randomize,
+    onChange: (e: ChangeEvent<HTMLInputElement>) => {
+      setFormState({
+        ...formState,
+        randomize: e.currentTarget.checked,
+      })
+    }
+  }
   const widthRangeProps = {
     id: 'width',
     labelText: 'width',
     name: 'width',
     min: 72,
-    max: 1440,
+    max: 720,
     value: state?.width,
+    disabled: formState.randomize,
     onChange: (e: ChangeEvent<HTMLInputElement>) => {
       const width = Number(e.currentTarget.value);
       if (!state) return void (0);
       setState({
         ...state,
         width,
-        height: Math.ceil(width * initialState.height / initialState.width)
+        height: Math.ceil(width * dafaultState.height / dafaultState.width)
       })
     }
   }
@@ -53,14 +79,15 @@ const DangoEditor = () => {
     labelText: 'height',
     name: 'height',
     min: 52,
-    max: 1028,
+    max: 520,
     value: state?.height,
+    disabled: formState.randomize,
     onChange: (e: ChangeEvent<HTMLInputElement>) => {
       const height = Number(e.currentTarget.value);
       if (!state) return void (0);
       setState({
         ...state,
-        width: Math.ceil(height * initialState.width / initialState.height),
+        width: Math.ceil(height * dafaultState.width / dafaultState.height),
         height
       })
     }
@@ -70,6 +97,7 @@ const DangoEditor = () => {
     labelText: 'fill',
     name: 'fill',
     value: state?.fill,
+    disabled: formState.randomize,
     onChange: (e: ChangeEvent<HTMLInputElement>) => {
       if (!state) return void (0);
       setState({
@@ -83,6 +111,7 @@ const DangoEditor = () => {
     labelText: 'stroke',
     name: 'stroke',
     value: state?.stroke,
+    disabled: formState.randomize,
     onChange: (e: ChangeEvent<HTMLInputElement>) => {
       if (!state) return void (0);
       setState({
@@ -106,14 +135,33 @@ const DangoEditor = () => {
       })
     }
   }
+  const randomHexColorFactory = () => {
+    const hex = (number: number) => number.toString(16)
+    let color = '#'
+    for (let i = 0; i < 6; i++) {
+      color += hex(Math.ceil(16 * Math.random()))
+    }
+    return color
+  }
+  const randomizeDangoParamFactory = (): DangoChangeableParameters => {
+    const width = 72 + Math.ceil(360 * Math.random());
+    return {
+      width,
+      height: Math.ceil(width * dafaultState.height / dafaultState.width),
+      fill: randomHexColorFactory(),
+      stroke: randomHexColorFactory(),
+      strokeWidth: Math.ceil(8 * Math.random())
+    }
+  }
 
   const applyProps = {
     labelText: '変更を反映する',
     onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
       if (!state) return void (0);
-      dispatch(updateDangoAction({
+      dispatch(updateDangoAction(formState.randomize ? {
         ...state,
-      }))
+        ...randomizeDangoParamFactory()
+      } : state))
     }
   }
 
@@ -122,7 +170,7 @@ const DangoEditor = () => {
     onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
       if (!state) return void (0);
       const { id, ...copiedParams } = state;
-      dispatch(addDangoAction(copiedParams))
+      dispatch(addDangoAction(formState.randomize ? randomizeDangoParamFactory() : copiedParams))
     }
   }
 
@@ -139,6 +187,7 @@ const DangoEditor = () => {
         state ? (
           <>
             <Dango {...state} />
+            <InputToggle {...randomizeProps} />
             <InputRange {...widthRangeProps} />
             <InputRange {...heightRangeProps} />
             <InputColor {...fillProps} />
