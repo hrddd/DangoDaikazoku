@@ -3,9 +3,10 @@
 // width操作でstateが変更される
 
 import { useContext } from "react";
-import SelectableDango from "../molecules/SelectableDango/SelectableDango";
-import { DangoDaikazokuContext, DangoDaikazokuUpdateContext } from '../../contexts/dangoDaikazokuContext';
-import { deselectDangoAction, selectDangoAction, addDangoAction } from '../../modules/dangoDaikazoku';
+import SelectableDango from "../../molecules/SelectableDango/SelectableDango";
+import { DangoDaikazokuContext, DangoDaikazokuUpdateContext } from '../../../contexts/dangoDaikazokuContext';
+import { deselectDangoAction, selectDangoAction, addDangoAction } from '../../../modules/dangoDaikazoku';
+import styles from './DangoDaikazoku.module.css'
 
 const DangoDaikazoku = () => {
   // TODO: customhookに退避
@@ -22,10 +23,15 @@ const DangoDaikazoku = () => {
   }
 
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-end' }}>
+    <div className={styles.root}>
       {dangoDaikazoku?.dangos.map((dangoProps) => {
         const isSelected = dangoDaikazoku.selectedId === dangoProps.id;
-        return (<SelectableDango {...dangoProps} isSelected={isSelected} onClick={clickHandler} key={dangoProps.id} />)
+        const size = Math.floor(dangoProps.width / 72);
+        return (
+          <div className={styles[`_item--${size}`]} key={dangoProps.id} >
+            <SelectableDango {...dangoProps} isSelected={isSelected} onClick={clickHandler} />
+          </div>
+        )
       })}
     </div>)
 }

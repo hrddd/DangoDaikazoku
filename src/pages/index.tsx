@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import DangoEditor from '../components/organisms/DangoEditor';
-import DangoDaikazoku from '../components/organisms/DangoDaikazoku';
+import DangoDaikazoku from '../components/organisms/DangoDaikazoku/DangoDaikazoku';
 import { DangoDaikazokuContextProvider } from '../contexts/dangoDaikazokuContext';
 
 export default function Home() {

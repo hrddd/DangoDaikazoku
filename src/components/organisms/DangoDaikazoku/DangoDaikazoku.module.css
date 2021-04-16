@@ -1,0 +1,49 @@
+.root {
+  display: grid;
+	grid-template-columns: repeat(20, 72px);
+  grid-template-rows: repeat(10, 52px);
+  grid-auto-flow: dense;
+}
+._item--1 {
+  grid-row: span 1;
+  grid-column: span 1;
+}
+._item--2 {
+  grid-row: span 2;
+  grid-column: span 2;
+}
+._item--3 {
+  grid-row: span 3;
+  grid-column: span 3;
+}
+._item--4 {
+  grid-row: span 4;
+  grid-column: span 4;
+}
+._item--5 {
+  grid-row: span 5;
+  grid-column: span 5;
+}
+._item--6 {
+  grid-row: span 6;
+  grid-column: span 6;
+}
+._item--7 {
+  grid-row: span 7;
+  grid-column: span 7;
+}
+._item--8 {
+  grid-row: span 8;
+  grid-column: span 8;
+}
+._item--9 {
+  grid-row: span 9;
+  grid-column: span 9;
+}
+._item--10 {
+  grid-row: span 10;
+  grid-column: 1span 0;
+}
+
+
+

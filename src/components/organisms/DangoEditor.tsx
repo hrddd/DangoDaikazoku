@@ -7,7 +7,6 @@ import InputRange from '../atoms/InputRange';
 import { ChangeEvent, useContext, useEffect, useState } from "react";
 import InputColor from '../atoms/InputColor';
 import { DangoDaikazokuContext, DangoDaikazokuUpdateContext } from "../../contexts/dangoDaikazokuContext";
-import DangoDaikazoku from './DangoDaikazoku';
 import Button from "../atoms/Button";
 import { updateDangoAction, addDangoAction } from '../../modules/dangoDaikazoku';
 import InputToggle from '../atoms/InputToggle';
