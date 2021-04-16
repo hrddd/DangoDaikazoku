@@ -138,7 +138,7 @@ const DangoEditor = () => {
     const hex = (number: number) => number.toString(16)
     let color = '#'
     for (let i = 0; i < 6; i++) {
-      color += hex(Math.ceil(16 * Math.random()))
+      color += hex(Math.trunc(15.9 * Math.random()))
     }
     return color
   }
