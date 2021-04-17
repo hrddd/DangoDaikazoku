@@ -8,7 +8,7 @@ import { ChangeEvent, useContext, useEffect, useState } from "react";
 import InputColor from '../atoms/InputColor';
 import { DangoDaikazokuContext, DangoDaikazokuUpdateContext } from "../../contexts/dangoDaikazokuContext";
 import Button from "../atoms/Button";
-import { updateDangoAction, addDangoAction } from '../../modules/dangoDaikazoku';
+import { updateDangoAction, addDangoAction, removeDangoAction } from '../../modules/dangoDaikazoku';
 import InputToggle from '../atoms/InputToggle';
 import { Dango as DangoType } from '../../types/Dango';
 
@@ -173,6 +173,15 @@ const DangoEditor = () => {
     }
   }
 
+  const removeProps = {
+    labelText: 'だんごを削除する',
+    onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
+      if (!state) return void (0);
+      const { id } = state;
+      dispatch(removeDangoAction(id))
+    }
+  }
+
   const addProps = {
     labelText: 'だんごを追加する',
     onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -194,6 +203,7 @@ const DangoEditor = () => {
             <InputRange {...strokeWidthProps} />
             <Button {...applyProps} />
             <Button {...copyProps} />
+            <Button {...removeProps} />
           </>
         ) : <Button {...addProps} />
       }
