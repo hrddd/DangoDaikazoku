@@ -2,15 +2,15 @@
 // height操作でstateが変更される
 // width操作でstateが変更される
 
-import Dango from "../atoms/Dango";
-import InputRange from '../atoms/InputRange';
+import Dango from "../../atoms/Dango";
+import InputRange from '../../atoms/InputRange';
 import { ChangeEvent, useContext, useEffect, useState } from "react";
-import InputColor from '../atoms/InputColor';
-import { DangoDaikazokuContext, DangoDaikazokuUpdateContext } from "../../contexts/dangoDaikazokuContext";
-import Button from "../atoms/Button";
-import { updateDangoAction, addDangoAction, removeDangoAction } from '../../modules/dangoDaikazoku';
-import InputToggle from '../atoms/InputToggle';
-import { Dango as DangoType } from '../../types/Dango';
+import InputColor from '../../atoms/InputColor';
+import { DangoDaikazokuContext, DangoDaikazokuUpdateContext } from "../../../contexts/dangoDaikazokuContext";
+import Button from "../../atoms/Button";
+import { updateDangoAction, addDangoAction, removeDangoAction } from '../../../modules/dangoDaikazoku';
+import InputToggle from '../../atoms/InputToggle';
+import { Dango as DangoType } from '../../../types/Dango';
 
 type DangoChangeableParameters = Omit<DangoType, 'id'>
 const dafaultState: DangoChangeableParameters = {

@@ -6,9 +6,9 @@ import { useContext } from "react";
 import SelectableDango from "../../molecules/SelectableDango/SelectableDango";
 import { DangoDaikazokuContext, DangoDaikazokuUpdateContext } from '../../../contexts/dangoDaikazokuContext';
 import { deselectDangoAction, selectDangoAction, addDangoAction } from '../../../modules/dangoDaikazoku';
-import styles from './DangoDaikazoku.module.css'
+import styles from './Viewer.module.css'
 
-const DangoDaikazoku = () => {
+const DangoDaikazokuViewer = () => {
   // TODO: customhookに退避
   const dangoDaikazoku = useContext(DangoDaikazokuContext)
   const dispatch = useContext(DangoDaikazokuUpdateContext)
@@ -36,4 +36,4 @@ const DangoDaikazoku = () => {
     </div>)
 }
 
-export default DangoDaikazoku;
+export default DangoDaikazokuViewer;

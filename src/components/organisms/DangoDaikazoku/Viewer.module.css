@@ -1,6 +1,6 @@
 .root {
   display: grid;
-	grid-template-columns: repeat(20, 72px);
+	grid-template-columns: repeat(10, 72px);
   grid-template-rows: repeat(10, 52px);
   grid-auto-flow: dense;
 }
