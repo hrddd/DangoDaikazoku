@@ -6,7 +6,7 @@ type PopDangoProps = Omit<DangoType, 'id'>;
 
 const PopDango = (props: PopDangoProps) => {
   return (
-    <div className={styles.popDango}>
+    <div className={styles.root}>
       <Dango {...props} />
     </div>)
 }

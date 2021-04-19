@@ -9,7 +9,7 @@ type SelectableDangoProps = DangoType & {
 
 const SelectableDango = (props: SelectableDangoProps) => {
   const { isSelected, onClick, id, ...dangoProps } = props;
-  const className = isSelected ? `${styles['selectableDango--isSelected']}` : styles.selectableDango;
+  const className = isSelected ? `${styles['root--isSelected']}` : styles.root;
   return (
     // TODO: waiarea
     <div onClick={onClick} role="button" className={className} data-id={id}>
