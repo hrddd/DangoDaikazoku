@@ -1,8 +1,8 @@
 import DangoDaikazokuViewer from './Viewer';
 import DangoEditor from './Editor';
 import React, { ChangeEvent, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { DangoDaikazokuContext, DangoDaikazokuUpdateContext } from '../../../contexts/dangoDaikazokuContext';
-import { selectDangoAction, deselectDangoAction, addDangoAction, removeDangoAction, updateDangoAction } from '../../../modules/dangoDaikazoku';
+import { ViewerContext, ViewerUpdateContext } from '../../../contexts/viewerContext';
+import { selectDangoAction, deselectDangoAction, addDangoAction, removeDangoAction, updateDangoAction } from '../../../modules/viewer';
 import { Dango as DangoType } from '../../../types/Dango';
 import Button from '../../atoms/Button';
 
@@ -17,8 +17,8 @@ const dafaultState: DangoChangeableParameters = {
 
 const DangoDaikazoku = () => {
   // TODO: customhookに退避
-  const dangoDaikazoku = useContext(DangoDaikazokuContext)
-  const dispatch = useContext(DangoDaikazokuUpdateContext)
+  const dangoDaikazoku = useContext(ViewerContext)
+  const dispatch = useContext(ViewerUpdateContext)
 
   // TODO: editor用のcontextを形成
   // {

@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import DangoDaikazoku from '../components/organisms/DangoDaikazoku/';
-import { DangoDaikazokuContextProvider } from '../contexts/dangoDaikazokuContext';
+import { ViewerContextProvider } from '../contexts/viewerContext';
 
 export default function Home() {
   return (
@@ -13,9 +13,9 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>DangoDaikazoku</h1>
-        <DangoDaikazokuContextProvider>
+        <ViewerContextProvider>
           <DangoDaikazoku />
-        </DangoDaikazokuContextProvider>
+        </ViewerContextProvider>
       </main>
 
       <footer className={styles.footer}>
