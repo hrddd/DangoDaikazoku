@@ -39,13 +39,7 @@ const DangoDaikazoku = () => {
   const viewer = useContext(ViewerContext)
   const dispatch = useContext(ViewerUpdateContext)
 
-  // TODO: editor用のcontextを形成
-  // {
-  //   dango: {},
-  //   inputs: {
-  //     randomize: true
-  //   }
-  // }
+  // TODO: EditorContext
   const [editorState, setEditorState] = useState({
     original: undefined as undefined | DangoType,
     inputs: {
@@ -57,15 +51,23 @@ const DangoDaikazoku = () => {
       randomize: true
     }
   });
-  const selectEditingDangoProps = useCallback(() => ({
-    editingDango: {
-      width: editorState.inputs.width,
-      height: editorState.inputs.height,
-      fill: editorState.inputs.fill,
-      stroke: editorState.inputs.stroke,
-      strokeWidth: editorState.inputs.strokeWidth,
-    }
+  const selectEditingDangoProps = useMemo(() => ({
+    width: editorState.inputs.width,
+    height: editorState.inputs.height,
+    fill: editorState.inputs.fill,
+    stroke: editorState.inputs.stroke,
+    strokeWidth: editorState.inputs.strokeWidth,
   }), [editorState.inputs])
+
+  const updateInputs = useCallback((newInputs: Partial<typeof editorState.inputs>) => {
+    setEditorState({
+      ...editorState,
+      inputs: {
+        ...editorState.inputs,
+        ...newInputs,
+      }
+    })
+  }, [editorState])
 
   useEffect(() => {
     console.log(editorState)
@@ -82,12 +84,8 @@ const DangoDaikazoku = () => {
       name: 'randomize',
       checked: editorState.inputs.randomize,
       onChange: (e: ChangeEvent<HTMLInputElement>) => {
-        setEditorState({
-          ...editorState,
-          inputs: {
-            ...editorState.inputs,
-            randomize: e.currentTarget.checked,
-          }
+        updateInputs({
+          randomize: e.currentTarget.checked
         })
       }
     },
@@ -100,13 +98,9 @@ const DangoDaikazoku = () => {
       disabled: editorState.inputs.randomize,
       onChange: (e: ChangeEvent<HTMLInputElement>) => {
         const width = Number(e.currentTarget.value);
-        setEditorState({
-          ...editorState,
-          inputs: {
-            ...editorState.inputs,
-            width,
-            height: Math.ceil(width * dafaultState.height / dafaultState.width)
-          }
+        updateInputs({
+          width,
+          height: Math.ceil(width * dafaultState.height / dafaultState.width)
         })
       }
     },
@@ -119,13 +113,9 @@ const DangoDaikazoku = () => {
       disabled: editorState.inputs.randomize,
       onChange: (e: ChangeEvent<HTMLInputElement>) => {
         const height = Number(e.currentTarget.value);
-        setEditorState({
-          ...editorState,
-          inputs: {
-            ...editorState.inputs,
-            width: Math.ceil(height * dafaultState.width / dafaultState.height),
-            height
-          }
+        updateInputs({
+          width: Math.ceil(height * dafaultState.width / dafaultState.height),
+          height
         })
       }
     },
@@ -135,12 +125,8 @@ const DangoDaikazoku = () => {
       value: editorState.inputs.fill,
       disabled: editorState.inputs.randomize,
       onChange: (e: ChangeEvent<HTMLInputElement>) => {
-        setEditorState({
-          ...editorState,
-          inputs: {
-            ...editorState.inputs,
-            fill: e.currentTarget.value,
-          }
+        updateInputs({
+          fill: e.currentTarget.value,
         })
       }
     },
@@ -150,12 +136,8 @@ const DangoDaikazoku = () => {
       value: editorState.inputs.stroke,
       disabled: editorState.inputs.randomize,
       onChange: (e: ChangeEvent<HTMLInputElement>) => {
-        setEditorState({
-          ...editorState,
-          inputs: {
-            ...editorState.inputs,
-            stroke: e.currentTarget.value,
-          }
+        updateInputs({
+          stroke: e.currentTarget.value,
         })
       }
     },
@@ -167,12 +149,8 @@ const DangoDaikazoku = () => {
       value: editorState.inputs.strokeWidth,
       disabled: editorState.inputs.randomize,
       onChange: (e: ChangeEvent<HTMLInputElement>) => {
-        setEditorState({
-          ...editorState,
-          inputs: {
-            ...editorState.inputs,
-            strokeWidth: Number(e.currentTarget.value),
-          }
+        updateInputs({
+          strokeWidth: Number(e.currentTarget.value),
         })
       }
     },
@@ -180,10 +158,11 @@ const DangoDaikazoku = () => {
       labelText: '変更を反映する',
       onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
         if (!editorState.original) return void (0);
-        dispatch(updateDangoAction(editorState.inputs.randomize ? {
-          ...editorState.original,
-          ...randomizeDangoParamFactory()
-        } : {
+        dispatch(updateDangoAction(editorState.inputs.randomize
+          ? {
+            ...editorState.original,
+            ...randomizeDangoParamFactory()
+          } : {
             ...editorState.original,
             ...editorState.inputs
           }))
@@ -234,7 +213,7 @@ const DangoDaikazoku = () => {
     <>
       { editorState.original ? (
         <Editor
-          dango={selectEditingDangoProps().editingDango} {...inputProps} />
+          dango={selectEditingDangoProps} {...inputProps} />
       ) : (<Button {...addProps} />)}
       { dangos ? (
         <Viewer dangos={dangos} clickHandler={clickHandler} />
