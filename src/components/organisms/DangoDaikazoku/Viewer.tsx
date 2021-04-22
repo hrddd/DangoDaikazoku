@@ -2,7 +2,7 @@ import SelectableDango from "../../molecules/SelectableDango/SelectableDango";
 import styles from './Viewer.module.css'
 import { Dango as DangoType } from '../../../types/Dango';
 
-const DangoDaikazokuViewer = ({ dangos, clickHandler }: {
+const Viewer = ({ dangos, clickHandler }: {
   dangos: (DangoType & {
     isSelected: boolean
   })[],
@@ -21,4 +21,4 @@ const DangoDaikazokuViewer = ({ dangos, clickHandler }: {
     </div>)
 }
 
-export default DangoDaikazokuViewer;
+export default Viewer;

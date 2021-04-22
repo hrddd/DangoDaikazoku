@@ -9,7 +9,7 @@ import Button from "../../atoms/Button";
 import InputToggle from '../../atoms/InputToggle';
 import { Dango as DangoType } from '../../../types/Dango';
 
-const DangoEditor = ({ dango, inputProps }: {
+const Editor = ({ dango, inputProps }: {
   dango: Omit<DangoType, 'id'>,
   inputProps: {
     randomize: any,
@@ -39,4 +39,4 @@ const DangoEditor = ({ dango, inputProps }: {
   )
 }
 
-export default DangoEditor;
+export default Editor;

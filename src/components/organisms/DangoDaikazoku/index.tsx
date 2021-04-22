@@ -1,5 +1,5 @@
-import DangoDaikazokuViewer from './Viewer';
-import DangoEditor from './Editor';
+import Viewer from './Viewer';
+import Editor from './Editor';
 import React, { ChangeEvent, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { ViewerContext, ViewerUpdateContext } from '../../../contexts/viewerContext';
 import { selectDangoAction, deselectDangoAction, addDangoAction, removeDangoAction, updateDangoAction } from '../../../modules/viewer';
@@ -17,7 +17,7 @@ const dafaultState: DangoChangeableParameters = {
 
 const DangoDaikazoku = () => {
   // TODO: customhookに退避
-  const dangoDaikazoku = useContext(ViewerContext)
+  const viewer = useContext(ViewerContext)
   const dispatch = useContext(ViewerUpdateContext)
 
   // TODO: editor用のcontextを形成
@@ -52,9 +52,9 @@ const DangoDaikazoku = () => {
     console.log(editorState)
     setEditorState({
       ...editorState,
-      original: dangoDaikazoku?.dangos.find(({ id }) => id === dangoDaikazoku.selectedId),
+      original: viewer?.dangos.find(({ id }) => id === viewer.selectedId),
     })
-  }, [dangoDaikazoku?.selectedId])
+  }, [viewer?.selectedId])
 
   // Editor
   const randomizeProps = {
@@ -222,14 +222,14 @@ const DangoDaikazoku = () => {
 
   // Viewer
   const dangos = useMemo(() => {
-    return dangoDaikazoku?.dangos.map((dango) => ({
+    return viewer?.dangos.map((dango) => ({
       ...dango,
-      isSelected: dangoDaikazoku.selectedId === dango.id
+      isSelected: viewer.selectedId === dango.id
     }))
-  }, [dangoDaikazoku])
+  }, [viewer])
   const clickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     const clickedId = e.currentTarget.dataset['id'] as string
-    if (dangoDaikazoku && dangoDaikazoku.selectedId !== clickedId) {
+    if (viewer && viewer.selectedId !== clickedId) {
       dispatch(selectDangoAction(clickedId))
     } else {
       dispatch(deselectDangoAction())
@@ -250,11 +250,11 @@ const DangoDaikazoku = () => {
   return (
     <>
       { editorState.original ? (
-        <DangoEditor
+        <Editor
           dango={selectEditingDangoProps().editingDango} inputProps={inputProps} />
       ) : (<Button {...addProps} />)}
       { dangos ? (
-        <DangoDaikazokuViewer dangos={dangos} clickHandler={clickHandler} />
+        <Viewer dangos={dangos} clickHandler={clickHandler} />
       ) : ''}
     </>)
 }
