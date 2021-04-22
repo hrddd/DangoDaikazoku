@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 
-type ButtonProps = Pick<JSX.IntrinsicElements['button'],
+export type ButtonProps = Pick<JSX.IntrinsicElements['button'],
   | 'onClick'> & {
     labelText: string,
   }

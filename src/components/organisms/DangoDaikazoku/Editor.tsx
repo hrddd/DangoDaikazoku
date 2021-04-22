@@ -3,38 +3,47 @@
 // width操作でstateが変更される
 
 import Dango from "../../atoms/Dango";
-import InputRange from '../../atoms/InputRange';
-import InputColor from '../../atoms/InputColor';
-import Button from "../../atoms/Button";
-import InputToggle from '../../atoms/InputToggle';
+import InputRange, { InputRangeProps } from '../../atoms/InputRange';
+import InputColor, { InputColorProps } from '../../atoms/InputColor';
+import Button, { ButtonProps } from "../../atoms/Button";
+import InputToggle, { InputToggleProps } from '../../atoms/InputToggle';
 import { Dango as DangoType } from '../../../types/Dango';
 
-const Editor = ({ dango, inputProps }: {
+const Editor = ({
+  dango,
+  randomizeProps,
+  widthRangeProps,
+  heightRangeProps,
+  fillProps,
+  strokeProps,
+  strokeWidthProps,
+  applyProps,
+  copyProps,
+  removeProps,
+}: {
   dango: Omit<DangoType, 'id'>,
-  inputProps: {
-    randomize: any,
-    widthRange: any,
-    heightRange: any,
-    fill: any,
-    stroke: any,
-    strokeWidth: any,
-    apply: any,
-    copy: any,
-    remove: any,
-  }
+  randomizeProps: InputToggleProps,
+  widthRangeProps: InputRangeProps,
+  heightRangeProps: InputRangeProps,
+  fillProps: InputColorProps,
+  strokeProps: InputColorProps,
+  strokeWidthProps: InputRangeProps,
+  applyProps: ButtonProps,
+  copyProps: ButtonProps,
+  removeProps: ButtonProps,
 }) => {
   return (
     <>
       <Dango {...dango} />
-      <InputToggle {...inputProps.randomize} />
-      <InputRange {...inputProps.widthRange} />
-      <InputRange {...inputProps.heightRange} />
-      <InputColor {...inputProps.fill} />
-      <InputColor {...inputProps.stroke} />
-      <InputRange {...inputProps.strokeWidth} />
-      <Button {...inputProps.apply} />
-      <Button {...inputProps.copy} />
-      <Button {...inputProps.remove} />
+      <InputToggle {...randomizeProps} id={randomizeProps.name} />
+      <InputRange {...widthRangeProps} id={widthRangeProps.name} />
+      <InputRange {...heightRangeProps} id={heightRangeProps.name} />
+      <InputColor {...fillProps} id={fillProps.name} />
+      <InputColor {...strokeProps} id={strokeProps.name} />
+      <InputRange {...strokeWidthProps} id={strokeWidthProps.name} />
+      <Button {...applyProps} />
+      <Button {...copyProps} />
+      <Button {...removeProps} />
     </>
   )
 }

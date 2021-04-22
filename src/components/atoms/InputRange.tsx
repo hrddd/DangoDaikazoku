@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 
-type InputRangeProps = Pick<JSX.IntrinsicElements['input'],
+export type InputRangeProps = Pick<JSX.IntrinsicElements['input'],
   | 'id'
   | 'value'
   | 'name'

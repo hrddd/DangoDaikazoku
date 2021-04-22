@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 
-type InputToggleProps = Pick<JSX.IntrinsicElements['input'],
+export type InputToggleProps = Pick<JSX.IntrinsicElements['input'],
   | 'id'
   | 'value'
   | 'name'

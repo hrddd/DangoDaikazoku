@@ -1,4 +1,4 @@
-type InputColorProps = Pick<JSX.IntrinsicElements['input'],
+export type InputColorProps = Pick<JSX.IntrinsicElements['input'],
   | 'id'
   | 'value'
   | 'name'
