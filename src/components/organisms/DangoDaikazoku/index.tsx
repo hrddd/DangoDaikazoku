@@ -28,7 +28,7 @@ const DangoDaikazoku = () => {
   //   }
   // }
   const [editorState, setEditorState] = useState({
-    dango: undefined as undefined | DangoType,
+    original: undefined as undefined | DangoType,
     inputs: {
       width: 72,
       height: 52,
@@ -52,7 +52,7 @@ const DangoDaikazoku = () => {
     console.log(editorState)
     setEditorState({
       ...editorState,
-      dango: dangoDaikazoku?.dangos.find(({ id }) => id === dangoDaikazoku.selectedId),
+      original: dangoDaikazoku?.dangos.find(({ id }) => id === dangoDaikazoku.selectedId),
     })
   }, [dangoDaikazoku?.selectedId])
 
@@ -184,12 +184,12 @@ const DangoDaikazoku = () => {
   const applyProps = {
     labelText: '変更を反映する',
     onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
-      if (!editorState.dango) return void (0);
+      if (!editorState.original) return void (0);
       dispatch(updateDangoAction(editorState.inputs.randomize ? {
-        ...editorState.dango,
+        ...editorState.original,
         ...randomizeDangoParamFactory()
       } : {
-          ...editorState.dango,
+          ...editorState.original,
           ...editorState.inputs
         }))
     }
@@ -198,8 +198,8 @@ const DangoDaikazoku = () => {
   const copyProps = {
     labelText: 'だんごをコピーする',
     onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
-      if (!editorState.dango) return void (0);
-      const { id, ...copiedParams } = editorState.dango;
+      if (!editorState.original) return void (0);
+      const { id, ...copiedParams } = editorState.original;
       dispatch(addDangoAction(editorState.inputs.randomize ? randomizeDangoParamFactory() : copiedParams))
     }
   }
@@ -207,8 +207,8 @@ const DangoDaikazoku = () => {
   const removeProps = {
     labelText: 'だんごを削除する',
     onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
-      if (!editorState.dango) return void (0);
-      const { id } = editorState.dango;
+      if (!editorState.original) return void (0);
+      const { id } = editorState.original;
       dispatch(removeDangoAction(id))
     }
   }
@@ -249,7 +249,7 @@ const DangoDaikazoku = () => {
   }
   return (
     <>
-      { editorState.dango ? (
+      { editorState.original ? (
         <DangoEditor
           dango={selectEditingDangoProps().editingDango} inputProps={inputProps} />
       ) : (<Button {...addProps} />)}
