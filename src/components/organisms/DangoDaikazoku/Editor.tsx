@@ -30,13 +30,6 @@ const Editor = ({
 }) => {
   return (
     <>
-      <InputToggle
-        id='randomize'
-        labelText='パラメータを適当に'
-        name='randomize'
-        checked={enableRandomize}
-        onChange={onChangeHandlers.enableRandomize}
-      />
       <InputRange
         id='width'
         labelText='width'
@@ -72,6 +65,13 @@ const Editor = ({
         value={strokeWidth}
         disabled={enableRandomize}
         onChange={onChangeHandlers.other}
+      />
+      <InputToggle
+        id='randomize'
+        labelText='パラメータを適当に'
+        name='randomize'
+        checked={enableRandomize}
+        onChange={onChangeHandlers.enableRandomize}
       />
       <Button
         labelText='変更を反映する'
