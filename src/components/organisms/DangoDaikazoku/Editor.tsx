@@ -2,12 +2,10 @@
 // height操作でstateが変更される
 // width操作でstateが変更される
 
-import Dango from "../../atoms/Dango";
 import InputRange from '../../atoms/InputRange';
 import InputColor from '../../atoms/InputColor';
 import Button from "../../atoms/Button";
-import InputToggle, { InputToggleProps } from '../../atoms/InputToggle';
-import { Dango as DangoType } from '../../../types/Dango';
+import InputToggle from '../../atoms/InputToggle';
 
 type Form = {
   width: number,
@@ -24,7 +22,7 @@ const Editor = ({
 }: {
   form: Form,
   onChangeHandlers: {
-    [key in keyof Form]: (e: React.ChangeEvent<HTMLInputElement>) => void
+    [key in ('enableRandomize' | 'width' | 'other')]: (e: React.ChangeEvent<HTMLInputElement>) => void
   }
   onClickHandlers: {
     [key in ('apply' | 'copy' | 'remove')]: (e: React.MouseEvent<HTMLButtonElement>) => void
@@ -55,7 +53,7 @@ const Editor = ({
         name='fill'
         value={fill}
         disabled={enableRandomize}
-        onChange={onChangeHandlers.fill}
+        onChange={onChangeHandlers.other}
       />
       <InputColor
         id='stroke'
@@ -63,7 +61,7 @@ const Editor = ({
         name='stroke'
         value={stroke}
         disabled={enableRandomize}
-        onChange={onChangeHandlers.stroke}
+        onChange={onChangeHandlers.other}
       />
       <InputRange
         id='strokeWidth'
@@ -73,7 +71,7 @@ const Editor = ({
         max={16}
         value={strokeWidth}
         disabled={enableRandomize}
-        onChange={onChangeHandlers.strokeWidth}
+        onChange={onChangeHandlers.other}
       />
       <Button
         labelText='変更を反映する'
