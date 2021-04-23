@@ -3,47 +3,90 @@
 // width操作でstateが変更される
 
 import Dango from "../../atoms/Dango";
-import InputRange, { InputRangeProps } from '../../atoms/InputRange';
-import InputColor, { InputColorProps } from '../../atoms/InputColor';
-import Button, { ButtonProps } from "../../atoms/Button";
+import InputRange from '../../atoms/InputRange';
+import InputColor from '../../atoms/InputColor';
+import Button from "../../atoms/Button";
 import InputToggle, { InputToggleProps } from '../../atoms/InputToggle';
 import { Dango as DangoType } from '../../../types/Dango';
 
+type Form = {
+  width: number,
+  fill: string,
+  stroke: string,
+  strokeWidth: number,
+  enableRandomize: boolean
+}
+
 const Editor = ({
-  dango,
-  randomizeProps,
-  widthRangeProps,
-  heightRangeProps,
-  fillProps,
-  strokeProps,
-  strokeWidthProps,
-  applyProps,
-  copyProps,
-  removeProps,
+  form: { width, fill, stroke, strokeWidth, enableRandomize, },
+  onChangeHandlers,
+  onClickHandlers,
 }: {
-  dango: Omit<DangoType, 'id'>,
-  randomizeProps: InputToggleProps,
-  widthRangeProps: InputRangeProps,
-  heightRangeProps: InputRangeProps,
-  fillProps: InputColorProps,
-  strokeProps: InputColorProps,
-  strokeWidthProps: InputRangeProps,
-  applyProps: ButtonProps,
-  copyProps: ButtonProps,
-  removeProps: ButtonProps,
+  form: Form,
+  onChangeHandlers: {
+    [key in keyof Form]: (e: React.ChangeEvent<HTMLInputElement>) => void
+  }
+  onClickHandlers: {
+    [key in ('apply' | 'copy' | 'remove')]: (e: React.MouseEvent<HTMLButtonElement>) => void
+  }
 }) => {
   return (
     <>
-      <Dango {...dango} />
-      <InputToggle {...randomizeProps} id={randomizeProps.name} />
-      <InputRange {...widthRangeProps} id={widthRangeProps.name} />
-      <InputRange {...heightRangeProps} id={heightRangeProps.name} />
-      <InputColor {...fillProps} id={fillProps.name} />
-      <InputColor {...strokeProps} id={strokeProps.name} />
-      <InputRange {...strokeWidthProps} id={strokeWidthProps.name} />
-      <Button {...applyProps} />
-      <Button {...copyProps} />
-      <Button {...removeProps} />
+      <InputToggle
+        id='randomize'
+        labelText='パラメータを適当に'
+        name='randomize'
+        checked={enableRandomize}
+        onChange={onChangeHandlers.enableRandomize}
+      />
+      <InputRange
+        id='width'
+        labelText='width'
+        name='width'
+        min={72}
+        max={720}
+        value={width}
+        disabled={enableRandomize}
+        onChange={onChangeHandlers.width}
+      />
+      <InputColor
+        id='fill'
+        labelText='fill'
+        name='fill'
+        value={fill}
+        disabled={enableRandomize}
+        onChange={onChangeHandlers.fill}
+      />
+      <InputColor
+        id='stroke'
+        labelText='stroke'
+        name='stroke'
+        value={stroke}
+        disabled={enableRandomize}
+        onChange={onChangeHandlers.stroke}
+      />
+      <InputRange
+        id='strokeWidth'
+        labelText='strokeWidth'
+        name='strokeWidth'
+        min={1}
+        max={16}
+        value={strokeWidth}
+        disabled={enableRandomize}
+        onChange={onChangeHandlers.strokeWidth}
+      />
+      <Button
+        labelText='変更を反映する'
+        onClick={onClickHandlers.apply}
+      />
+      <Button
+        labelText='だんごをコピーする'
+        onClick={onClickHandlers.copy}
+      />
+      <Button
+        labelText='だんごを削除する'
+        onClick={onClickHandlers.remove}
+      />
     </>
   )
 }

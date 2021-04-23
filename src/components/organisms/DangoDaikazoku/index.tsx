@@ -1,6 +1,6 @@
 import Viewer from './Viewer';
 import Editor from './Editor';
-import React, { ChangeEvent, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { ViewerContext, ViewerUpdateContext } from '../../../contexts/viewerContext';
 import { selectDangoAction, deselectDangoAction, addDangoAction, removeDangoAction, updateDangoAction } from '../../../modules/viewer';
 import { Dango as DangoType } from '../../../types/Dango';
@@ -42,32 +42,31 @@ const DangoDaikazoku = () => {
   // TODO: EditorContext
   const [editorState, setEditorState] = useState({
     original: undefined as undefined | DangoType,
-    inputs: {
+    modified: {
       width: 72,
       height: 52,
       fill: '#aaC8B3',
       stroke: '#5D3F35',
       strokeWidth: 8,
-      randomize: true
-    }
+    },
+    enableRandomize: true
   });
-  const selectEditingDangoProps = useMemo(() => ({
-    width: editorState.inputs.width,
-    height: editorState.inputs.height,
-    fill: editorState.inputs.fill,
-    stroke: editorState.inputs.stroke,
-    strokeWidth: editorState.inputs.strokeWidth,
-  }), [editorState.inputs])
 
-  const updateInputs = useCallback((newInputs: Partial<typeof editorState.inputs>) => {
+  const updateModified = (newInputs: Partial<typeof editorState.modified>) => {
     setEditorState({
       ...editorState,
-      inputs: {
-        ...editorState.inputs,
+      modified: {
+        ...editorState.modified,
         ...newInputs,
       }
     })
-  }, [editorState])
+  }
+  const switchEnableRandomize = (enableRandomize: boolean) => {
+    setEditorState({
+      ...editorState,
+      enableRandomize
+    })
+  }
 
   useEffect(() => {
     console.log(editorState)
@@ -78,119 +77,60 @@ const DangoDaikazoku = () => {
   }, [viewer?.selectedId])
 
   // Editor
-  const inputProps = {
-    randomizeProps: {
-      labelText: 'パラメータを適当に',
-      name: 'randomize',
-      checked: editorState.inputs.randomize,
-      onChange: (e: ChangeEvent<HTMLInputElement>) => {
-        updateInputs({
-          randomize: e.currentTarget.checked
-        })
-      }
+  const editorOnChangeHandlers = {
+    enableRandomize: (e: React.ChangeEvent<HTMLInputElement>) => {
+      switchEnableRandomize(e.currentTarget.checked)
     },
-    widthRangeProps: {
-      labelText: 'width',
-      name: 'width',
-      min: 72,
-      max: 720,
-      value: editorState.inputs.width,
-      disabled: editorState.inputs.randomize,
-      onChange: (e: ChangeEvent<HTMLInputElement>) => {
-        const width = Number(e.currentTarget.value);
-        updateInputs({
-          width,
-          height: Math.ceil(width * dafaultState.height / dafaultState.width)
-        })
-      }
+    width: (e: React.ChangeEvent<HTMLInputElement>) => {
+      const width = Number(e.currentTarget.value);
+      updateModified({
+        width,
+        height: Math.ceil(width * dafaultState.height / dafaultState.width)
+      })
     },
-    heightRangeProps: {
-      labelText: 'height',
-      name: 'height',
-      min: 52,
-      max: 520,
-      value: editorState.inputs.height,
-      disabled: editorState.inputs.randomize,
-      onChange: (e: ChangeEvent<HTMLInputElement>) => {
-        const height = Number(e.currentTarget.value);
-        updateInputs({
-          width: Math.ceil(height * dafaultState.width / dafaultState.height),
-          height
-        })
-      }
+    fill: (e: React.ChangeEvent<HTMLInputElement>) => {
+      updateModified({
+        fill: e.currentTarget.value,
+      })
     },
-    fillProps: {
-      labelText: 'fill',
-      name: 'fill',
-      value: editorState.inputs.fill,
-      disabled: editorState.inputs.randomize,
-      onChange: (e: ChangeEvent<HTMLInputElement>) => {
-        updateInputs({
-          fill: e.currentTarget.value,
-        })
-      }
+    stroke: (e: React.ChangeEvent<HTMLInputElement>) => {
+      updateModified({
+        stroke: e.currentTarget.value,
+      })
     },
-    strokeProps: {
-      labelText: 'stroke',
-      name: 'stroke',
-      value: editorState.inputs.stroke,
-      disabled: editorState.inputs.randomize,
-      onChange: (e: ChangeEvent<HTMLInputElement>) => {
-        updateInputs({
-          stroke: e.currentTarget.value,
-        })
-      }
+    strokeWidth: (e: React.ChangeEvent<HTMLInputElement>) => {
+      updateModified({
+        strokeWidth: Number(e.currentTarget.value),
+      })
+    }
+  }
+
+  const editorOnClickHandlers = {
+    apply: (e: React.MouseEvent<HTMLButtonElement>) => {
+      if (!editorState.original) return void (0);
+      dispatch(updateDangoAction(editorState.enableRandomize
+        ? {
+          ...editorState.original,
+          ...randomizeDangoParamFactory()
+        } : {
+          ...editorState.original,
+          ...editorState.modified
+        }))
     },
-    strokeWidthProps: {
-      labelText: 'strokeWidth',
-      name: 'strokeWidth',
-      min: 1,
-      max: 16,
-      value: editorState.inputs.strokeWidth,
-      disabled: editorState.inputs.randomize,
-      onChange: (e: ChangeEvent<HTMLInputElement>) => {
-        updateInputs({
-          strokeWidth: Number(e.currentTarget.value),
-        })
-      }
+    copy: (e: React.MouseEvent<HTMLButtonElement>) => {
+      if (!editorState.original) return void (0);
+      const { id, ...copiedParams } = editorState.original;
+      dispatch(addDangoAction(editorState.enableRandomize ? randomizeDangoParamFactory() : copiedParams))
     },
-    applyProps: {
-      labelText: '変更を反映する',
-      onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
-        if (!editorState.original) return void (0);
-        dispatch(updateDangoAction(editorState.inputs.randomize
-          ? {
-            ...editorState.original,
-            ...randomizeDangoParamFactory()
-          } : {
-            ...editorState.original,
-            ...editorState.inputs
-          }))
-      }
-    },
-    copyProps: {
-      labelText: 'だんごをコピーする',
-      onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
-        if (!editorState.original) return void (0);
-        const { id, ...copiedParams } = editorState.original;
-        dispatch(addDangoAction(editorState.inputs.randomize ? randomizeDangoParamFactory() : copiedParams))
-      }
-    },
-    removeProps: {
-      labelText: 'だんごを削除する',
-      onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
-        if (!editorState.original) return void (0);
-        const { id } = editorState.original;
-        dispatch(removeDangoAction(id))
-      }
+    remove: (e: React.MouseEvent<HTMLButtonElement>) => {
+      if (!editorState.original) return void (0);
+      const { id } = editorState.original;
+      dispatch(removeDangoAction(id))
     },
   }
 
-  const addProps = {
-    labelText: 'だんごを追加する',
-    onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
-      dispatch(addDangoAction())
-    }
+  const addOnClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    dispatch(addDangoAction())
   }
 
   // Viewer
@@ -200,7 +140,7 @@ const DangoDaikazoku = () => {
       isSelected: viewer.selectedId === dango.id
     }))
   }, [viewer])
-  const clickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
+  const ViewerClickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     const clickedId = e.currentTarget.dataset['id'] as string
     if (viewer && viewer.selectedId !== clickedId) {
       dispatch(selectDangoAction(clickedId))
@@ -213,10 +153,19 @@ const DangoDaikazoku = () => {
     <>
       { editorState.original ? (
         <Editor
-          dango={selectEditingDangoProps} {...inputProps} />
-      ) : (<Button {...addProps} />)}
+          form={{
+            ...editorState.modified,
+            enableRandomize: editorState.enableRandomize
+          }}
+          onChangeHandlers={editorOnChangeHandlers}
+          onClickHandlers={editorOnClickHandlers}
+        />
+      ) : (<Button
+        labelText='だんごを追加する'
+        onClick={addOnClickHandler}
+      />)}
       { dangos ? (
-        <Viewer dangos={dangos} clickHandler={clickHandler} />
+        <Viewer dangos={dangos} clickHandler={ViewerClickHandler} />
       ) : ''}
     </>)
 }
