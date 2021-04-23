@@ -80,11 +80,20 @@ const DangoDaikazoku = () => {
       },
     })
   }
+  const clearOriginal = () => {
+    setEditorState({
+      ...editorState,
+      original: null,
+    })
+  }
 
   useEffect(() => {
     const selected = viewer.dangos.find(({ id }) => id === viewer.selectedId);
-    if (!selected) return void (0);
-    setOriginal(selected)
+    if (!selected) {
+      clearOriginal()
+    } else {
+      setOriginal(selected)
+    }
   }, [viewer.selectedId])
 
   // Editor
@@ -146,12 +155,10 @@ const DangoDaikazoku = () => {
   }
 
   // Viewer
-  const dangos = useMemo(() => {
-    return viewer?.dangos.map((dango) => ({
-      ...dango,
-      isSelected: viewer.selectedId === dango.id
-    }))
-  }, [viewer])
+  const dangos = viewer.dangos.map((dango) => ({
+    ...dango,
+    isSelected: viewer.selectedId === dango.id
+  }))
   const ViewerClickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     const clickedId = e.currentTarget.dataset['id'] as string
     if (viewer && viewer.selectedId !== clickedId) {
