@@ -3,7 +3,7 @@ import { initialState, reducer, State, ActionType } from "../modules/viewer"
 
 export const ViewerContext = createContext<State>(initialState)
 
-export const ViewerUpdateContext = createContext<Dispatch<ActionType>>(null)
+export const ViewerUpdateContext = createContext<Dispatch<ActionType>>(() => void (0))
 
 export function ViewerContextProvider({ children }: { children: ReactChild }) {
   const [viewer, dispatch] = useReducer(reducer, initialState)
