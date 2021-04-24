@@ -1,10 +1,11 @@
 import Viewer from './Viewer';
 import Editor from './Editor';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState, useCallback } from 'react';
 import { ViewerContext, ViewerUpdateContext } from '../../../contexts/viewerContext';
 import { selectDangoAction, deselectDangoAction, addDangoAction, removeDangoAction, updateDangoAction } from '../../../modules/viewer';
 import { Dango as DangoType } from '../../../types/Dango';
 import Button from '../../atoms/Button';
+
 
 type ChangeableDangoParam = Omit<DangoType, 'id'>
 
@@ -155,18 +156,19 @@ const DangoDaikazoku = () => {
   }
 
   // Viewer
-  const dangos = viewer.dangos.map((dango) => ({
+  const dangos = useMemo(() => viewer.dangos.map((dango) => ({
     ...dango,
     isSelected: viewer.selectedId === dango.id
-  }))
-  const ViewerClickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
+  })), [viewer.dangos, viewer.selectedId])
+  // TODO: ClickHandlerの中身を分ける。selectedIdの変更で全てのだんごがレンダリングし直されてしまうため
+  const ViewerClickHandler = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const clickedId = e.currentTarget.dataset['id'] as string
     if (viewer && viewer.selectedId !== clickedId) {
       dispatch(selectDangoAction(clickedId))
     } else {
       dispatch(deselectDangoAction())
     }
-  }
+  }, [viewer.selectedId])
 
   return (
     <>
