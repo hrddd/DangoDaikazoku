@@ -149,6 +149,11 @@ const DangoDaikazoku = () => {
       const { id } = editorState.original;
       dispatch(removeDangoAction(id))
     },
+    reset: (e: React.MouseEvent<HTMLButtonElement>) => {
+      if (!editorState.original) return void (0);
+      dispatch(updateDangoAction(editorState.original))
+      setOriginal(editorState.original)
+    },
   }
 
   const addOnClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -178,6 +183,7 @@ const DangoDaikazoku = () => {
             ...editorState.modified,
             enableRandomize: editorState.enableRandomize
           }}
+          target={editorState.original}
           onChangeHandlers={editorOnChangeHandlers}
           onClickHandlers={editorOnClickHandlers}
         />

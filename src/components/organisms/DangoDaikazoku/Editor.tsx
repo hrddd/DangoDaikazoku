@@ -6,6 +6,8 @@ import InputRange from '../../atoms/InputRange';
 import InputColor from '../../atoms/InputColor';
 import Button from "../../atoms/Button";
 import InputToggle from '../../atoms/InputToggle';
+import PopDango from '../../molecules/PopDango/PopDango';
+import { PopDangoProps } from '../../molecules/PopDango/PopDango';
 
 type Form = {
   width: number,
@@ -17,19 +19,22 @@ type Form = {
 
 const Editor = ({
   form: { width, fill, stroke, strokeWidth, enableRandomize, },
+  target,
   onChangeHandlers,
   onClickHandlers,
 }: {
   form: Form,
+  target: PopDangoProps,
   onChangeHandlers: {
     [key in ('enableRandomize' | 'width' | 'other')]: (e: React.ChangeEvent<HTMLInputElement>) => void
   }
   onClickHandlers: {
-    [key in ('apply' | 'copy' | 'remove')]: (e: React.MouseEvent<HTMLButtonElement>) => void
+    [key in ('apply' | 'copy' | 'remove' | 'reset')]: (e: React.MouseEvent<HTMLButtonElement>) => void
   }
 }) => {
   return (
     <>
+      <PopDango {...target} />
       <InputRange
         id='width'
         labelText='width'
@@ -72,6 +77,10 @@ const Editor = ({
         name='randomize'
         checked={enableRandomize}
         onChange={onChangeHandlers.enableRandomize}
+      />
+      <Button
+        labelText='変更をリセット'
+        onClick={onClickHandlers.reset}
       />
       <Button
         labelText='変更を反映する'
