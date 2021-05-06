@@ -1,4 +1,4 @@
-import { selectDangoAction, reducer, deselectDangoAction, updateDangoAction, addDangoAction, removeDangoAction } from '../dangoDaikazoku';
+import { selectDangoAction, reducer, deselectDangoAction, updateDangoAction, addDangoAction, removeDangoAction } from '../viewer';
 
 const dummyDango = (id: string) => ({
   id,
