@@ -154,6 +154,9 @@ const DangoDaikazoku = () => {
       dispatch(updateDangoAction(editorState.original))
       setOriginal(editorState.original)
     },
+    deselect: (e: React.MouseEvent<HTMLButtonElement>) => {
+      dispatch(deselectDangoAction())
+    },
   }
 
   const addOnClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {

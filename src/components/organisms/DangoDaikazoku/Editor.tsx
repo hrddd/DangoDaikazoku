@@ -29,7 +29,7 @@ const Editor = ({
     [key in ('enableRandomize' | 'width' | 'other')]: (e: React.ChangeEvent<HTMLInputElement>) => void
   }
   onClickHandlers: {
-    [key in ('apply' | 'copy' | 'remove' | 'reset')]: (e: React.MouseEvent<HTMLButtonElement>) => void
+    [key in ('apply' | 'copy' | 'remove' | 'reset' | 'deselect')]: (e: React.MouseEvent<HTMLButtonElement>) => void
   }
 }) => {
   return (
@@ -93,6 +93,10 @@ const Editor = ({
       <Button
         labelText='だんごを削除する'
         onClick={onClickHandlers.remove}
+      />
+      <Button
+        labelText='選択を解除'
+        onClick={onClickHandlers.deselect}
       />
     </>
   )
