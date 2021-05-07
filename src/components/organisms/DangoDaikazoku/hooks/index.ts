@@ -81,20 +81,19 @@ export const useDangodaikazokuState = () => {
   const editorClickHandlers = {
     apply: (e: React.MouseEvent<HTMLButtonElement>) => {
       if (!editor.original) return void (0);
-      const newDango = editor.randomize
-        ? {
-          ...editor.original,
-          ...randomizeDangoParamFactory()
-        } : {
-          ...editor.original,
-          ...editor.modified
-        }
+      const newDango = {
+        ...editor.original,
+        ...editor.modified
+      }
       viewerDispatch(updateDangoAction(newDango))
       editorDispatch(setOriginalAction(newDango))
     },
     copy: (e: React.MouseEvent<HTMLButtonElement>) => {
       if (!editor.original) return void (0);
-      viewerDispatch(addDangoAction(editor.randomize ? randomizeDangoParamFactory() : editor.modified))
+      viewerDispatch(addDangoAction(editor.randomize
+        ? randomizeDangoParamFactory()
+        : editor.modified)
+      )
     },
     remove: (e: React.MouseEvent<HTMLButtonElement>) => {
       if (!editor.original) return void (0);
@@ -107,6 +106,8 @@ export const useDangodaikazokuState = () => {
       editorDispatch(setOriginalAction(editor.original))
     },
     deselect: (e: React.MouseEvent<HTMLButtonElement>) => {
+      if (!editor.original) return void (0);
+      viewerDispatch(updateDangoAction(editor.original))
       viewerDispatch(deselectDangoAction())
     },
   }

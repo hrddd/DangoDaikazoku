@@ -42,7 +42,6 @@ const Editor = ({
         min={72}
         max={720}
         value={width}
-        disabled={randomize}
         onChange={onChangeHandlers.width}
       />
       <InputColor
@@ -50,7 +49,6 @@ const Editor = ({
         labelText='fill'
         name='fill'
         value={fill}
-        disabled={randomize}
         onChange={onChangeHandlers.other}
       />
       <InputColor
@@ -58,7 +56,6 @@ const Editor = ({
         labelText='stroke'
         name='stroke'
         value={stroke}
-        disabled={randomize}
         onChange={onChangeHandlers.other}
       />
       <InputRange
@@ -68,15 +65,7 @@ const Editor = ({
         min={1}
         max={16}
         value={strokeWidth}
-        disabled={randomize}
         onChange={onChangeHandlers.other}
-      />
-      <InputToggle
-        id='randomize'
-        labelText='パラメータを適当に'
-        name='randomize'
-        checked={randomize}
-        onChange={onChangeHandlers.randomize}
       />
       <Button
         labelText='変更をリセット'
@@ -85,6 +74,13 @@ const Editor = ({
       <Button
         labelText='変更を反映する'
         onClick={onClickHandlers.apply}
+      />
+      <InputToggle
+        id='randomize'
+        labelText='ランダムでコピー'
+        name='randomize'
+        checked={randomize}
+        onChange={onChangeHandlers.randomize}
       />
       <Button
         labelText='だんごをコピーする'
