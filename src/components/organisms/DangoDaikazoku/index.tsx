@@ -5,6 +5,8 @@ import { ViewerContext, ViewerUpdateContext } from '../../../contexts/viewerCont
 import { selectDangoAction, deselectDangoAction, addDangoAction, removeDangoAction, updateDangoAction } from '../../../modules/viewer';
 import { Dango as DangoType } from '../../../types/Dango';
 import Button from '../../atoms/Button';
+import { EditorContext, EditorUpdateContext } from '../../../contexts/editorContext';
+import { switchRandomizeAction, clearOriginalAction, setOriginalAction, updateModifiedAction } from '../../../modules/editor';
 
 
 type ChangeableDangoParam = Omit<DangoType, 'id'>
@@ -38,129 +40,83 @@ const randomizeDangoParamFactory = (): ChangeableDangoParam => {
 const DangoDaikazoku = () => {
   // TODO: customhookに退避
   const viewer = useContext(ViewerContext)
-  const dispatch = useContext(ViewerUpdateContext)
-
-  // TODO: EditorContext
-  const [editorState, setEditorState] = useState({
-    original: null as null | DangoType,
-    modified: {
-      width: 72,
-      height: 52,
-      fill: '#aaC8B3',
-      stroke: '#5D3F35',
-      strokeWidth: 8,
-    },
-    enableRandomize: true
-  });
-
-  const updateModified = (newInputs: Partial<typeof editorState.modified>) => {
-    setEditorState({
-      ...editorState,
-      modified: {
-        ...editorState.modified,
-        ...newInputs,
-      }
-    })
-  }
-  const switchEnableRandomize = (enableRandomize: boolean) => {
-    setEditorState({
-      ...editorState,
-      enableRandomize
-    })
-  }
-  const setOriginal = (original: DangoType) => {
-    setEditorState({
-      ...editorState,
-      original,
-      modified: {
-        width: original.width,
-        height: original.height,
-        fill: original.fill,
-        stroke: original.stroke,
-        strokeWidth: original.strokeWidth,
-      },
-    })
-  }
-  const clearOriginal = () => {
-    setEditorState({
-      ...editorState,
-      original: null,
-    })
-  }
+  const viewerDispatch = useContext(ViewerUpdateContext)
+  const editor = useContext(EditorContext)
+  const editorDispatch = useContext(EditorUpdateContext)
 
   useEffect(() => {
     const selected = viewer.dangos.find(({ id }) => id === viewer.selectedId);
     if (!selected) {
-      clearOriginal()
+      editorDispatch(clearOriginalAction())
     } else {
-      setOriginal(selected)
+      editorDispatch(setOriginalAction(selected))
     }
   }, [viewer.selectedId])
 
   // Editor
   const editorOnChangeHandlers = {
-    enableRandomize: (e: React.ChangeEvent<HTMLInputElement>) => {
-      switchEnableRandomize(e.currentTarget.checked)
+    randomize: (e: React.ChangeEvent<HTMLInputElement>) => {
+      editorDispatch(switchRandomizeAction(e.currentTarget.checked))
     },
     width: (e: React.ChangeEvent<HTMLInputElement>) => {
       const width = Number(e.currentTarget.value);
-      updateModified({
+      editorDispatch(updateModifiedAction({
         width,
         height: Math.ceil(width * dafaultState.height / dafaultState.width)
-      })
-      if (!editorState.original) return void (0)
-      dispatch(updateDangoAction({
-        ...editorState.original,
-        ...editorState.modified
+      }))
+      if (!editor.original) return void (0)
+      viewerDispatch(updateDangoAction({
+        ...editor.original,
+        ...editor.modified
       }))
     },
     other: (e: React.ChangeEvent<HTMLInputElement>) => {
-      updateModified({
+      editorDispatch(updateModifiedAction({
         [e.currentTarget.name]: e.currentTarget.value,
-      })
-      if (!editorState.original) return void (0)
-      dispatch(updateDangoAction({
-        ...editorState.original,
-        ...editorState.modified
+      }))
+      if (!editor.original) return void (0)
+      viewerDispatch(updateDangoAction({
+        ...editor.original,
+        ...editor.modified
       }))
     }
   }
 
   const editorOnClickHandlers = {
     apply: (e: React.MouseEvent<HTMLButtonElement>) => {
-      if (!editorState.original) return void (0);
-      const newDango = editorState.enableRandomize
+      if (!editor.original) return void (0);
+      const newDango = editor.randomize
         ? {
-          ...editorState.original,
+          ...editor.original,
           ...randomizeDangoParamFactory()
         } : {
-          ...editorState.original,
-          ...editorState.modified
+          ...editor.original,
+          ...editor.modified
         }
-      dispatch(updateDangoAction(newDango))
-      setOriginal(newDango)
+      viewerDispatch(updateDangoAction(newDango))
+      editorDispatch(setOriginalAction(newDango))
     },
     copy: (e: React.MouseEvent<HTMLButtonElement>) => {
-      if (!editorState.original) return void (0);
-      dispatch(addDangoAction(editorState.enableRandomize ? randomizeDangoParamFactory() : editorState.modified))
+      if (!editor.original) return void (0);
+      viewerDispatch(addDangoAction(editor.randomize ? randomizeDangoParamFactory() : editor.modified))
     },
     remove: (e: React.MouseEvent<HTMLButtonElement>) => {
-      if (!editorState.original) return void (0);
-      const { id } = editorState.original;
-      dispatch(removeDangoAction(id))
+      if (!editor.original) return void (0);
+      const { id } = editor.original;
+      viewerDispatch(removeDangoAction(id))
     },
     reset: (e: React.MouseEvent<HTMLButtonElement>) => {
-      if (!editorState.original) return void (0);
-      dispatch(updateDangoAction(editorState.original))
-      setOriginal(editorState.original)
+      if (!editor.original) return void (0);
+      viewerDispatch(updateDangoAction(editor.original))
+      editorDispatch(setOriginalAction(editor.original))
     },
     deselect: (e: React.MouseEvent<HTMLButtonElement>) => {
-      dispatch(deselectDangoAction())
+      viewerDispatch(deselectDangoAction())
     },
   }
 
   const addOnClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-    dispatch(addDangoAction())
+    viewerDispatch(addDangoAction())
   }
 
   // Viewer
@@ -172,21 +128,21 @@ const DangoDaikazoku = () => {
   const ViewerClickHandler = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const clickedId = e.currentTarget.dataset['id'] as string
     if (viewer && viewer.selectedId !== clickedId) {
-      dispatch(selectDangoAction(clickedId))
+      viewerDispatch(selectDangoAction(clickedId))
     } else {
-      dispatch(deselectDangoAction())
+      viewerDispatch(deselectDangoAction())
     }
   }, [viewer.selectedId])
 
   return (
     <>
-      { editorState.original ? (
+      { editor.original ? (
         <Editor
           form={{
-            ...editorState.modified,
-            enableRandomize: editorState.enableRandomize
+            ...editor.modified,
+            randomize: editor.randomize
           }}
-          target={editorState.original}
+          target={editor.original}
           onChangeHandlers={editorOnChangeHandlers}
           onClickHandlers={editorOnClickHandlers}
         />

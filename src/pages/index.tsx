@@ -2,6 +2,7 @@ import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import DangoDaikazoku from '../components/organisms/DangoDaikazoku/';
 import { ViewerContextProvider } from '../contexts/viewerContext';
+import { EditorContextProvider } from '../contexts/editorContext';
 
 export default function Home() {
   return (
@@ -14,7 +15,9 @@ export default function Home() {
       <main className={styles.main}>
         <h1 className={styles.title}>DangoDaikazoku</h1>
         <ViewerContextProvider>
-          <DangoDaikazoku />
+          <EditorContextProvider>
+            <DangoDaikazoku />
+          </EditorContextProvider>
         </ViewerContextProvider>
       </main>
 

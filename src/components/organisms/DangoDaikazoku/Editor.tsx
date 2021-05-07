@@ -14,11 +14,11 @@ type Form = {
   fill: string,
   stroke: string,
   strokeWidth: number,
-  enableRandomize: boolean
+  randomize: boolean
 }
 
 const Editor = ({
-  form: { width, fill, stroke, strokeWidth, enableRandomize, },
+  form: { width, fill, stroke, strokeWidth, randomize, },
   target,
   onChangeHandlers,
   onClickHandlers,
@@ -26,7 +26,7 @@ const Editor = ({
   form: Form,
   target: PopDangoProps,
   onChangeHandlers: {
-    [key in ('enableRandomize' | 'width' | 'other')]: (e: React.ChangeEvent<HTMLInputElement>) => void
+    [key in ('randomize' | 'width' | 'other')]: (e: React.ChangeEvent<HTMLInputElement>) => void
   }
   onClickHandlers: {
     [key in ('apply' | 'copy' | 'remove' | 'reset' | 'deselect')]: (e: React.MouseEvent<HTMLButtonElement>) => void
@@ -42,7 +42,7 @@ const Editor = ({
         min={72}
         max={720}
         value={width}
-        disabled={enableRandomize}
+        disabled={randomize}
         onChange={onChangeHandlers.width}
       />
       <InputColor
@@ -50,7 +50,7 @@ const Editor = ({
         labelText='fill'
         name='fill'
         value={fill}
-        disabled={enableRandomize}
+        disabled={randomize}
         onChange={onChangeHandlers.other}
       />
       <InputColor
@@ -58,7 +58,7 @@ const Editor = ({
         labelText='stroke'
         name='stroke'
         value={stroke}
-        disabled={enableRandomize}
+        disabled={randomize}
         onChange={onChangeHandlers.other}
       />
       <InputRange
@@ -68,15 +68,15 @@ const Editor = ({
         min={1}
         max={16}
         value={strokeWidth}
-        disabled={enableRandomize}
+        disabled={randomize}
         onChange={onChangeHandlers.other}
       />
       <InputToggle
         id='randomize'
         labelText='パラメータを適当に'
         name='randomize'
-        checked={enableRandomize}
-        onChange={onChangeHandlers.enableRandomize}
+        checked={randomize}
+        onChange={onChangeHandlers.randomize}
       />
       <Button
         labelText='変更をリセット'
